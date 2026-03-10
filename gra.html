@@ -14,11 +14,13 @@ margin:0;
 }
 
 #playerContainer{
-position:fixed;
-top:10px;
-left:10px;
-width:180px;
+width:200px;
+margin:20px auto;
 text-align:center;
+display:flex;
+flex-direction:column;
+align-items:center;
+gap:10px;
 }
 
 #imageBox{
@@ -39,16 +41,15 @@ object-fit:contain;
 }
 
 #petName{
-margin-top:6px;
 font-weight:bold;
 color:#ffd700;
 cursor:pointer;
 }
 
 #playerInfo{
-margin-top:10px;
 font-size:14px;
 font-weight:bold;
+line-height:1.5;
 }
 
 #expBarContainer{
@@ -56,7 +57,6 @@ width:100%;
 height:15px;
 background:#555;
 border-radius:10px;
-margin-top:8px;
 overflow:hidden;
 }
 
@@ -68,8 +68,25 @@ transition:width 0.4s;
 }
 
 .content{
-margin-top:220px;
 text-align:center;
+padding-bottom:40px;
+}
+
+#challengeList{
+display:flex;
+flex-direction:column;
+align-items:center;
+gap:10px;
+margin-top:10px;
+}
+
+#challengeList div{
+background:#1e1e1e;
+padding:8px;
+border-radius:8px;
+display:flex;
+gap:8px;
+align-items:center;
 }
 
 .inventoryItem{
@@ -77,12 +94,27 @@ margin:10px;
 padding:10px;
 background:#1e1e1e;
 border-radius:10px;
-display:inline-block;
-text-align:center;
+display:flex;
+flex-direction:column;
+align-items:center;
+gap:6px;
+width:120px;
 }
 
 .inventoryItem img{
 width:60px;
+}
+
+#gameInventory{
+display:flex;
+flex-wrap:wrap;
+justify-content:center;
+}
+
+#backgroundInventory{
+display:flex;
+flex-wrap:wrap;
+justify-content:center;
 }
 
 button{
@@ -93,6 +125,10 @@ color:white;
 border:none;
 border-radius:6px;
 cursor:pointer;
+}
+
+button:hover{
+background:#666;
 }
 
 </style>
@@ -546,4 +582,5 @@ window.location.href="sklep_akselotl.html"
 </script>
 
 </body>
+
 </html>
