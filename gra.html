@@ -172,15 +172,9 @@ background:#666;
 <h3>Tła</h3>
 <div id="backgroundInventory"></div>
 
-
-
-
-
 <button onclick="openShop()">Sklep</button>
 
 </div>
-
-
 
 <script>
 
@@ -198,10 +192,7 @@ let challenges=[]
 
 const EXP_TO_LEVEL=100
 
-
-
 const shopItems=[
-
 {name:"bialy lis",skin:"Gemini_Generated_Image_yplakyplakyplaky-removebg-preview.png"},
 {name:"lisek w czapce P",skin:"Gemini_Generated_Image_3qswbr3qswbr3qsw-removebg-preview.png"},
 {name:"lisek w czapce zimowej",skin:"Gemini_Generated_Image_fgrfi0fgrfi0fgrf-removebg-preview.png"},
@@ -210,9 +201,7 @@ const shopItems=[
 {name:"niebieski robo-lis",skin:"Gemini_Generated_Image_dwykirdwykirdwyk-removebg-preview.png"},
 {name:"robo-lis.01",skin:"Gemini_Generated_Image_utr9aputr9aputr9-removebg-preview.png"},
 {name:"robo-lis.02",skin:"Gemini_Generated_Image_l9is0tl9is0tl9is-removebg-preview.png"}
-
 ]
-
 
 window.onload=function(){
 
@@ -234,225 +223,133 @@ loadChallenges()
 
 }
 
-
-
-
 function getDefaultSkin(){
-
-if(character==="kot")
-return "Gemini_Generated_Image_dbamlbdbamlbdbam-removebg-preview.png"
-
-if(character==="pies")
-return "Gemini_Generated_Image_1gv5471gv5471gv5-removebg-preview.png"
-
-if(character==="lis")
-return "Gemini_Generated_Image_ahddp8ahddp8ahdd-removebg-preview.png"
-
-if(character==="akselotl")
-return "Gemini_Generated_Image_m1v7eqm1v7eqm1v7-removebg-preview.png"
-
+if(character==="kot") return "Gemini_Generated_Image_dbamlbdbamlbdbam-removebg-preview.png"
+if(character==="pies") return "Gemini_Generated_Image_1gv5471gv5471gv5-removebg-preview.png"
+if(character==="lis") return "Gemini_Generated_Image_ahddp8ahddp8ahdd-removebg-preview.png"
+if(character==="akselotl") return "Gemini_Generated_Image_m1v7eqm1v7eqm1v7-removebg-preview.png"
 }
 
 function loadCharacter(){
-
 const savedSkin=localStorage.getItem("playerImage_"+character)
-
 if(savedSkin){
-
 imageBox.innerHTML=`<img src="${savedSkin}">`
-
 }else{
-
 imageBox.innerHTML=`<img src="${getDefaultSkin()}">`
-
 }
-
 }
 
 function resetSkin(){
-
 localStorage.removeItem("playerImage_"+character)
 loadCharacter()
-
 }
-
 
 function editName(){
-
 let name=prompt("Podaj imię")
-
 if(name){
-
 petNameBox.innerText=name
 localStorage.setItem("petName_"+character,name)
-
 }
-
 }
-
-
-
 
 function updateUI(){
-
 let percent=(exp/EXP_TO_LEVEL)*100
-
 playerInfo.innerHTML=`
-
 ${character}<br>
 Level ${level}<br>
 EXP ${exp}/${EXP_TO_LEVEL}<br>
 ⭐ ${skillPoints}
-
 `
-
 expBar.style.width=percent+"%"
-
 }
 
-
 function addChallenge(){
-
 const input=document.getElementById("challengeInput")
 const text=input.value.trim()
-
 if(text==="")return
-
 challenges.push(text)
-
 saveChallenges()
 renderChallenges()
-
 input.value=""
-
 }
 
 function renderChallenges(){
-
-    challengeList.innerHTML="";
-
-    challenges.forEach((text,index)=>{
-
-        const item=document.createElement("div");
-
-        const done=document.createElement("button");
-        done.innerText="✔ "+text+" (+10 EXP)";
-        done.onclick=function(){
-            completeChallenge(index);
-        };
-
-        const del=document.createElement("button");
-        del.innerText="❌ Usuń";
-        del.onclick=function(){
-            challenges.splice(index,1);
-            saveChallenges();
-            renderChallenges();
-        };
-
-        item.appendChild(done);
-        item.appendChild(del);
-
-        challengeList.appendChild(item);
-
-    });
-
+challengeList.innerHTML=""
+challenges.forEach((text,index)=>{
+const item=document.createElement("div")
+const done=document.createElement("button")
+done.innerText="✔ "+text+" (+10 EXP)"
+done.onclick=function(){completeChallenge(index)}
+const del=document.createElement("button")
+del.innerText="❌ Usuń"
+del.onclick=function(){
+challenges.splice(index,1)
+saveChallenges()
+renderChallenges()
+}
+item.appendChild(done)
+item.appendChild(del)
+challengeList.appendChild(item)
+})
 }
 
 function completeChallenge(index){
-
 exp+=10
-
 while(exp>=EXP_TO_LEVEL){
-
 exp-=EXP_TO_LEVEL
 level++
 skillPoints++
-
 }
-
 challenges.splice(index,1)
-
 saveGame()
 saveChallenges()
-
 updateUI()
 renderChallenges()
-
 }
 
-
-
-
 function saveGame(){
-
 localStorage.setItem("level_"+character,level)
 localStorage.setItem("exp_"+character,exp)
 localStorage.setItem("skillPoints_"+character,skillPoints)
 localStorage.setItem("shopPoints",skillPoints)
-
 }
 
 function saveChallenges(){
-
 localStorage.setItem("challenges",JSON.stringify(challenges))
-
 }
 
 function loadChallenges(){
-
 const saved=JSON.parse(localStorage.getItem("challenges"))
-
 if(saved) challenges=saved
-
 renderChallenges()
-
 }
 
-
-
 function loadInventory(){
-
 const inventory=JSON.parse(localStorage.getItem("inventory_"+character))||[]
-
 const box=document.getElementById("gameInventory")
-
 box.innerHTML=""
-
 inventory.forEach(name=>{
-
 const itemData=shopItems.find(i=>i.name===name)
 if(!itemData)return
-
 const div=document.createElement("div")
 div.className="inventoryItem"
-
 div.innerHTML=`
-
 <img src="${itemData.skin}">
 <br>
 ${itemData.name}
 <br>
 <button onclick="useItem('${itemData.skin}')">Użyj</button>
-
 `
-
 box.appendChild(div)
-
 })
-
 }
 
 function useItem(skin){
-
 localStorage.setItem("playerImage_"+character,skin)
 loadCharacter()
-
 }
 
-
-
-const backgroundItems = {
-
+const backgroundItems={
 "Las":"Gemini_Generated_Image_fyjik0fyjik0fyji.png",
 "Ocean":"Gemini_Generated_Image_zl545zl545zl545z.png",
 "Droga jaskolki":"Gemini_Generated_Image_2zwcof2zwcof2zwc.png",
@@ -473,114 +370,59 @@ const backgroundItems = {
 "THE WITHCHER":"Gemini_Generated_Image_xwd9ubxwd9ubxwd9.png",
 "Sierp i mlot":"Gemini_Generated_Image_y4lzd2y4lzd2y4lz.png",
 "Pod wodny skarb":"Gemini_Generated_Image_yugpmjyugpmjyugp.png",
-"Basen":"Gemini_Generated_Image_z0ysy8z0ysy8z0ys.png",
-
+"Basen":"Gemini_Generated_Image_z0ysy8z0ysy8z0ys.png"
 }
 
-
-
-function goToShop(){
-
-localStorage.setItem("shopPoints",skillPoints)
-window.location.href="sklep.html"
-
-}
 function setBackground(name){
-
-const img = backgroundItems[name]
-
-if(!img) return
-
+const img=backgroundItems[name]
+if(!img)return
 imageBox.style.backgroundImage = "url('"+img+"')"
-
 localStorage.setItem("playerBackground_"+character,name)
-
 }
 
 function resetBackground(){
-
 localStorage.removeItem("playerBackground_"+character)
 imageBox.style.backgroundImage="url('Gemini_Generated_Image_ucyn9nucyn9nucyn.png')"
-
 }
 
 function loadBackground(){
-
-const name = localStorage.getItem("playerBackground_"+character)
-
+const name=localStorage.getItem("playerBackground_"+character)
 if(name && backgroundItems[name]){
-
 imageBox.style.backgroundImage = "url('"+backgroundItems[name]+"')"
-
 }else{
-
 imageBox.style.backgroundImage = "url('Gemini_Generated_Image_ucyn9nucyn9nucyn.png')"
-
 }
-
 }
 
 function loadBackgroundInventory(){
-
-const bgInv = JSON.parse(localStorage.getItem("bgInventory_"+character)) || []
-
-const box = document.getElementById("backgroundInventory")
-
-box.innerHTML = ""
-
-bgInv.forEach(name => {
-
-const img = backgroundItems[name]
-
-if(!img) return
-
-const div = document.createElement("div")
+const bgInv=JSON.parse(localStorage.getItem("bgInventory_"+character))||[]
+const box=document.getElementById("backgroundInventory")
+box.innerHTML=""
+bgInv.forEach(name=>{
+const img=backgroundItems[name]
+if(!img)return
+const div=document.createElement("div")
 div.className="inventoryItem"
-
-div.innerHTML = `
-
+div.innerHTML=`
 <img src="${img}">
 <br>
 ${name}
 <br>
 <button onclick="setBackground('${name}')">Użyj tła</button>
-
 `
-
 box.appendChild(div)
-
 })
-
 }
 
 function openShop(){
-
-let character = localStorage.getItem("selectedCharacter")
-
-if(character==="kot"){
-window.location.href="sklep_kot.html"
+let character=localStorage.getItem("selectedCharacter")
+if(character==="kot"){window.location.href="sklep_kot.html"}
+if(character==="pies"){window.location.href="sklep_pies.html"}
+if(character==="lis"){window.location.href="sklep_lis.html"}
+if(character==="akselotl"){window.location.href="sklep_akselotl.html"}
 }
-
-if(character==="pies"){
-window.location.href="sklep_pies.html"
-}
-
-if(character==="lis"){
-window.location.href="sklep_lis.html"
-}
-
-if(character==="akselotl"){
-window.location.href="sklep_akselotl.html"
-}
-
-}
-
-
-
-
 
 </script>
 
 </body>
-
 </html>
